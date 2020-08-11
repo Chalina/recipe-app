@@ -13,14 +13,14 @@ func CreateServer() *http.ServeMux {
 
 func handleRoutes(w http.ResponseWriter, r *http.Request) {
 	switch {
-	case r.Method == "GET" && r.URL.Path == "/recipes":
-		handleGetRecipes(w)
+	case r.Method == "POST" && r.URL.Path == "/recipes":
+		handlePostRecipes(w)
 	default:
 		w.WriteHeader(http.StatusNotFound)
 	}
 }
 
-func handleGetRecipes(w http.ResponseWriter) {
-	log.Print("in get recipes")
+func handlePostRecipes(w http.ResponseWriter) {
+	log.Print("in post recipes")
 	w.Write([]byte(`{"hello": "json"}`))
 }
