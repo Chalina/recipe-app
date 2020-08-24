@@ -13,5 +13,5 @@ go test ./...
 ```
 ## Example request
 ```
-curl -d '{"ingredients": ["peppers", "potatoes"}]}' localhost:8080/recipes"
+curl -X POST -d '{"ingredients": ["chocolate"]}' 'localhost:8080/search'
 ```
