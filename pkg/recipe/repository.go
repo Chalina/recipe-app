@@ -13,8 +13,9 @@ var collection map[string]Recipe = map[string]Recipe{
 	"butter":    Recipe{Name: "cookies"},
 }
 
-func (r Repository) GetRecipeByIngredient(ingredient string) (Recipe, error) {
+func (r Repository) GetRecipesByIngredient(ingredient string) ([]Recipe, error) {
+	allRecipes := []Recipe{}
 	recipe := collection[ingredient]
-
-	return recipe, nil
+	allRecipes = append(allRecipes, recipe)
+	return allRecipes, nil
 }

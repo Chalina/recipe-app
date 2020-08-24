@@ -7,16 +7,15 @@ import (
 	"net/http"
 )
 
-type Controller struct{
-	GetRecipeByIngredient func(ingredient string) (Recipe, error)
-}
-
-type Query struct {
-	Ingredients []string
+type Controller struct {
+	GetRecipesByIngredient func(ingredient string) ([]Recipe, error)
 }
 
 func (c Controller) HandleSearch(w http.ResponseWriter, r *http.Request) {
-	q := Query{}
+	type query struct {
+		Ingredients []string
+	}
+	q := query{}
 
 	// r.Body is a reader
 	// can use ioutil with helper functions to access the data, or json pkg which has a decoder
@@ -37,17 +36,18 @@ func (c Controller) HandleSearch(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Printf("req body: %v", q)
-	recipes, err := c.GetRecipeByIngredient(q.Ingredients[0])
+	recipes, err := c.GetRecipesByIngredient(q.Ingredients[0])
 	if err != nil {
 		log.Print("error getting ingredients")
 		w.WriteHeader(http.StatusInternalServerError)
 	}
+
 	// TODO: check for empty recipes
-
-	// recipes := []recipe.Recipe{
-	// 	{Name: "Chocolate cake"},
-	// }
-
-	recipeResp, _ := json.Marshal(recipes)
-	w.Write([]byte(recipeResp))
+	type response struct {
+		Recipes []Recipe
+	}
+	resp, _ := json.Marshal(response{
+		Recipes: recipes,
+	})
+	w.Write([]byte(resp))
 }

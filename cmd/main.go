@@ -10,7 +10,7 @@ import (
 func main() {
 	recipeRepo := recipe.Repository{}
 	controller := recipe.Controller{
-		GetRecipeByIngredient: recipeRepo.GetRecipeByIngredient,
+		GetRecipesByIngredient: recipeRepo.GetRecipesByIngredient,
 	}
 	server := api.CreateServer(controller)
 
