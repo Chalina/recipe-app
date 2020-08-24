@@ -1,4 +1,6 @@
-package store
+package recipe
+
+type Repository struct{}
 
 type Recipe struct {
 	ID          int      `json:"id"`
@@ -11,7 +13,7 @@ var collection map[string]Recipe = map[string]Recipe{
 	"butter":    Recipe{Name: "cookies"},
 }
 
-func GetRecipeByIngredient(ingredient string) (Recipe, error) {
+func (r Repository) GetRecipeByIngredient(ingredient string) (Recipe, error) {
 	recipe := collection[ingredient]
 
 	return recipe, nil
