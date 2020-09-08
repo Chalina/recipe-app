@@ -20,8 +20,10 @@ var collection map[string]Recipe = map[string]Recipe{
 	"butter":    Recipe{Name: "cookies"},
 }
 
-func CreateNewRepository() (Repository, error) {
-	recipeMap, err := parseDataFile("pkg/recipe/sample_data.json")
+// CreateNewRepository returns a new Repository containing recipe data from the sample file
+func CreateNewRepository(path string) (Repository, error) {
+	// recipeMap, err := parseDataFile("pkg/recipe/sample_data.json")
+	recipeMap, err := parseDataFile(path)
 	if err != nil {
 		return Repository{}, err
 	}
@@ -31,8 +33,8 @@ func CreateNewRepository() (Repository, error) {
 	}, nil
 }
 
-func parseDataFile(filePath string) (map[string]Recipe, error) {
-	recipeMap := map[string]Recipe{}
+func parseDataFile(filePath string) (map[string][]Recipe, error) {
+	recipeMap := map[string][]Recipe{}
 	recipes := []Recipe{}
 	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
@@ -48,20 +50,20 @@ func parseDataFile(filePath string) (map[string]Recipe, error) {
 	for _, recipe := range recipes {
 		// loop through ingredient list
 		for _, ingredient := range recipe.Ingredients {
-			recipeMap[ingredient] = recipe
+			// if ingredient has been added before, append to list
+			if _, ok := recipeMap[ingredient]; ok {
+				recipeMap[ingredient] = append(recipeMap[ingredient], recipe)
+			} else {
+				// otherwise add ingredient as new key in map and push recipe
+				recipeMap[ingredient] = append(recipeMap[ingredient], recipe)
+			}
 		}
 	}
 
 	return recipeMap, nil
 }
 
+// GetRecipesByIngredient returns all recipes containing that ingredient
 func (r Repository) GetRecipesByIngredient(ingredient string) ([]Recipe, error) {
-	allRecipes := []Recipe{}
-	recipe := r.collection[ingredient]
-	allRecipes = append(allRecipes, recipe)
-	return allRecipes, nil
+	return r.collection[ingredient], nil
 }
-
-// TODO: pass path to file from main
-// TODO: update map with list of recipes
-// TODO: add tests

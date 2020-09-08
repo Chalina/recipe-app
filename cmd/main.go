@@ -8,7 +8,8 @@ import (
 )
 
 func main() {
-	recipeRepo, err := recipe.CreateNewRepository()
+	dataFilePath := "pkg/recipe/sample_data.json"
+	recipeRepo, err := recipe.CreateNewRepository(dataFilePath)
 	if err != nil {
 		log.Fatalf("Error creating repo : %v", err)
 	}
