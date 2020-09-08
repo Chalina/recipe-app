@@ -8,7 +8,10 @@ import (
 )
 
 func main() {
-	recipeRepo := recipe.Repository{}
+	recipeRepo, err := recipe.CreateNewRepository()
+	if err != nil {
+		log.Fatalf("Error creating repo : %v", err)
+	}
 	controller := recipe.Controller{
 		GetRecipesByIngredient: recipeRepo.GetRecipesByIngredient,
 	}
