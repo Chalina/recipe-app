@@ -24,8 +24,3 @@ func handleRoutes(c Controller) func(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
-
-//TODO: add tests
-// TODO: add recipes
-// TODO: structure app
-// TODO: format of the response
