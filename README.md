@@ -2,11 +2,13 @@
 
 ## Prerequisites
 - Go 1.14
+- Docker 
+
 ## Setup
 ```
-go mod download
-go run main.go
+docker-compose up
 ```
+
 ## Running tests
 ```
 go test ./...
