@@ -13,6 +13,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error creating repo : %v", err)
 	}
+	_, err = recipe.NewMongoClient()
+	if err != nil {
+		log.Fatalf("Error creating mongo client: %v", err)
+	}
+
 	controller := recipe.Controller{
 		GetRecipesByIngredient: recipeRepo.GetRecipesByIngredient,
 	}
