@@ -29,7 +29,7 @@ func TestHandleSearch(t *testing.T) {
 	assert.Equal(t, "{\"Recipes\":[]}", recorder.Body.String())
 }
 
-func TestHandleSearchInvalidBody(t *testing.T) {
+func TestHandleSearchEmptyBody(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	req := httptest.NewRequest("POST", "/search", nil)
 
@@ -42,5 +42,22 @@ func TestHandleSearchInvalidBody(t *testing.T) {
 	handler.ServeHTTP(recorder, req)
 
 	assert.Equal(t, http.StatusBadRequest, recorder.Code)
-	// assert.Equal(t, `anything?`, recorder.Body.String())
+}
+
+func TestHandleSearchInvalidBody(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	bodyString := `{"poodles": ["chocolate"]}`
+	reqBody := strings.NewReader(bodyString)
+
+	req := httptest.NewRequest("POST", "/search", reqBody)
+
+	controller := Controller{
+		GetRecipesByIngredient: func(ingredient string) ([]Recipe, error) {
+			return []Recipe{}, nil
+		},
+	}
+	handler := http.HandlerFunc(controller.HandleSearch)
+	handler.ServeHTTP(recorder, req)
+
+	assert.Equal(t, http.StatusBadRequest, recorder.Code)
 }

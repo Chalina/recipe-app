@@ -2,15 +2,18 @@ package recipe
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
+// Controller manages the methods and dependencies for POST /search
 type Controller struct {
 	GetRecipesByIngredient func(ingredient string) ([]Recipe, error)
 }
 
+// HandleSearch handles the requests to the POST /search endpoint
 func (c Controller) HandleSearch(w http.ResponseWriter, r *http.Request) {
 	type query struct {
 		Ingredients []string
@@ -35,7 +38,12 @@ func (c Controller) HandleSearch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("req body: %v", q)
+	if err := validateReqBody(q.Ingredients); err != nil {
+		log.Print("request body missing search strings")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	recipes, err := c.GetRecipesByIngredient(q.Ingredients[0])
 	if err != nil {
 		log.Print("error getting ingredients")
@@ -50,4 +58,11 @@ func (c Controller) HandleSearch(w http.ResponseWriter, r *http.Request) {
 		Recipes: recipes,
 	})
 	w.Write([]byte(resp))
+}
+
+func validateReqBody(searchTerms []string) error {
+	if len(searchTerms) == 0 {
+		return errors.New("No valid ingredients to search for")
+	}
+	return nil
 }

@@ -5,24 +5,20 @@ import (
 	"io/ioutil"
 )
 
+// Repository holds a collection of recipes
 type Repository struct {
 	collection map[string][]Recipe
 }
 
+// Recipe holds all the recipe details
 type Recipe struct {
 	ID          int      `json:"id"`
 	Name        string   `json:"title"`
 	Ingredients []string `json:"ingredients"`
 }
 
-var collection map[string]Recipe = map[string]Recipe{
-	"chocolate": Recipe{Name: "choc cake"},
-	"butter":    Recipe{Name: "cookies"},
-}
-
 // CreateNewRepository returns a new Repository containing recipe data from the sample file
 func CreateNewRepository(path string) (Repository, error) {
-	// recipeMap, err := parseDataFile("pkg/recipe/sample_data.json")
 	recipeMap, err := parseDataFile(path)
 	if err != nil {
 		return Repository{}, err
