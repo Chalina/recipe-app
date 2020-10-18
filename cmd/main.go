@@ -13,9 +13,14 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error creating repo : %v", err)
 	}
-	_, err = recipe.NewMongoClient()
+
+	repo, err := recipe.NewMongoClient()
 	if err != nil {
 		log.Fatalf("Error creating mongo client: %v", err)
+	}
+	
+	if err = repo.AddNumbers(); err != nil {
+		log.Printf("error inserting numbers: %v", err)
 	}
 
 	controller := recipe.Controller{
