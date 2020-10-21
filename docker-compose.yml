@@ -10,7 +10,10 @@ services:
     image: 'mongo'
     container_name: 'recipe_db'
     environment:
+      MONGO_INITDB_DATABASE: dev
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
     ports:
     - '27017:27017'
+    volumes:
+      - ./db/sample_data.js:/docker-entrypoint-initdb.d/sample_data.js
