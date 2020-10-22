@@ -16,4 +16,4 @@ services:
     ports:
     - '27017:27017'
     volumes:
-      - ./db/sample_data.js:/docker-entrypoint-initdb.d/sample_data.js
+      - ./db/:/docker-entrypoint-initdb.d/

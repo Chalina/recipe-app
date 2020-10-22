@@ -8,23 +8,16 @@ import (
 )
 
 func main() {
-	dataFilePath := "pkg/recipe/sample_data.json"
-	recipeRepo, err := recipe.CreateNewRepository(dataFilePath)
-	if err != nil {
-		log.Fatalf("Error creating repo : %v", err)
-	}
-
 	repo, err := recipe.NewMongoClient()
 	if err != nil {
 		log.Fatalf("Error creating mongo client: %v", err)
 	}
-	
-	if err = repo.AddNumbers(); err != nil {
-		log.Printf("error inserting numbers: %v", err)
-	}
+
+	err = repo.AddNumbers()
+	log.Printf("err: %v", err)
 
 	controller := recipe.Controller{
-		GetRecipesByIngredient: recipeRepo.GetRecipesByIngredient,
+		GetRecipesByIngredient: repo.GetRecipesByIngredient,
 	}
 	server := api.CreateServer(controller)
 

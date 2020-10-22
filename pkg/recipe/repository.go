@@ -9,12 +9,6 @@ type Repository struct {
 	collection map[string][]Recipe
 }
 
-type Recipe struct {
-	ID          int      `json:"id"`
-	Name        string   `json:"title"`
-	Ingredients []string `json:"ingredients"`
-}
-
 var collection map[string]Recipe = map[string]Recipe{
 	"chocolate": Recipe{Name: "choc cake"},
 	"butter":    Recipe{Name: "cookies"},
